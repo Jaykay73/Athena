@@ -15,13 +15,17 @@ ENV/
 frontend/dist/
 *.tsbuildinfo
 
-# Storage and DB files
+# Storage and runtime data files
 backend/storage/*.db
 backend/storage/*.duckdb
-backend/storage/reports/*.pdf
+backend/storage/datasets/*
+backend/storage/reports/*
+backend/storage/documents/*
 storage/*.db
 storage/*.duckdb
-storage/reports/*.pdf
+storage/datasets/*
+storage/reports/*
+storage/documents/*
 
 # Testing cache
 .pytest_cache/
