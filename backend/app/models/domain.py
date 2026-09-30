@@ -115,7 +115,7 @@ class Analysis(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     workspace = relationship("Workspace", back_populates="analyses")
-    evidence_records = relationship("Evidence", back_populates="analysis", cascade="all, delete-orphan")
+    evidence = relationship("Evidence", back_populates="analysis", cascade="all, delete-orphan")
     steps = relationship("AnalysisStep", back_populates="analysis", cascade="all, delete-orphan")
 
 class AnalysisStep(Base):
@@ -145,7 +145,7 @@ class Evidence(Base):
     assumptions = Column(JSON, nullable=True)
     verification_status = Column(String(30), default="verified")  # verified, unverified, failed
 
-    analysis = relationship("Analysis", back_populates="evidence_records")
+    analysis = relationship("Analysis", back_populates="evidence")
 
 class Report(Base):
     __tablename__ = "reports"

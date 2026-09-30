@@ -71,12 +71,13 @@ class EvidenceItem(BaseModel):
     id: Optional[str] = None
     claim: str
     source_dataset: str
-    relevant_columns: List[str] = []
+    relevant_columns: Optional[List[str]] = []
     computation_type: str  # SQL, Python, Stat, Profiler
     query_or_code: Optional[str] = None
-    computed_result: Any
-    assumptions: List[str] = []
+    computed_result: Optional[Any] = None
+    assumptions: Optional[List[str]] = []
     verification_status: str = "verified"
+    model_config = ConfigDict(from_attributes=True)
 
 class ChartSpec(BaseModel):
     id: str
@@ -85,12 +86,13 @@ class ChartSpec(BaseModel):
     x_axis: str
     y_axis: str
     series_name: Optional[str] = None
-    data: List[Dict[str, Any]]
+    data: List[Dict[str, Any]] = []
     units: Optional[str] = None
     source: Optional[str] = None
     date_range: Optional[str] = None
     filters: Optional[str] = None
     highlight_anomalies: Optional[List[Any]] = None
+    model_config = ConfigDict(from_attributes=True)
 
 class Hypothesis(BaseModel):
     id: str
@@ -99,21 +101,25 @@ class Hypothesis(BaseModel):
     tested_with: str
     evidence_summary: str
     numeric_impact: Optional[str] = None
+    model_config = ConfigDict(from_attributes=True)
 
 class LineageNode(BaseModel):
     id: str
     type: str  # question, dataset, column, query, metric, chart, conclusion
     label: str
     details: Optional[str] = None
+    model_config = ConfigDict(from_attributes=True)
 
 class LineageEdge(BaseModel):
     from_node: str
     to_node: str
     label: Optional[str] = None
+    model_config = ConfigDict(from_attributes=True)
 
 class LineageGraph(BaseModel):
     nodes: List[LineageNode]
     edges: List[LineageEdge]
+    model_config = ConfigDict(from_attributes=True)
 
 class AnalysisRequest(BaseModel):
     workspace_id: str
@@ -124,6 +130,15 @@ class AnalysisRequest(BaseModel):
 
 class ChallengeRequest(BaseModel):
     analysis_id: str
+
+class AnalysisStepOut(BaseModel):
+    id: Optional[str] = None
+    step_number: int
+    action: str
+    details: Optional[Any] = None
+    duration_ms: float = 0.0
+    created_at: Optional[datetime] = None
+    model_config = ConfigDict(from_attributes=True)
 
 class AnalysisOut(BaseModel):
     id: str
@@ -136,20 +151,20 @@ class AnalysisOut(BaseModel):
     findings_summary: Optional[str] = None
     detailed_answer: Optional[str] = None
     confidence: str = "MEDIUM"
-    confidence_rationale: List[str] = []
-    limitations: List[str] = []
-    recommendations: List[str] = []
+    confidence_rationale: Optional[List[str]] = []
+    limitations: Optional[List[str]] = []
+    recommendations: Optional[List[str]] = []
     execution_duration_ms: float = 0.0
-    model_name: str
+    model_name: str = "athena-v1"
     is_saved: bool = False
-    hypotheses: List[Dict[str, Any]] = []
-    metrics: List[Dict[str, Any]] = []
-    tables: List[Dict[str, Any]] = []
-    charts: List[ChartSpec] = []
+    hypotheses: Optional[List[Dict[str, Any]]] = []
+    metrics: Optional[List[Dict[str, Any]]] = []
+    tables: Optional[List[Dict[str, Any]]] = []
+    charts: Optional[List[Dict[str, Any]]] = []
     evidence: List[EvidenceItem] = []
-    lineage: Optional[LineageGraph] = None
+    lineage: Optional[Union[LineageGraph, Dict[str, Any]]] = None
     challenge_result: Optional[Dict[str, Any]] = None
-    steps: List[Dict[str, Any]] = []
+    steps: List[AnalysisStepOut] = []
     created_at: datetime
     model_config = ConfigDict(from_attributes=True)
 
