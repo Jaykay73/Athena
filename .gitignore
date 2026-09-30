@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Build artifacts
+frontend/dist/
+*.tsbuildinfo
+
+# Storage and DB files
+backend/storage/*.db
+backend/storage/*.duckdb
+backend/storage/reports/*.pdf
+storage/*.db
+storage/*.duckdb
+storage/reports/*.pdf
+
+# Testing cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS files
+.DS_Store
+Thumbs.db
